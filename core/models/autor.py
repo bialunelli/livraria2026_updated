@@ -1,5 +1,4 @@
 from django.db import models
-from sympy import false
 
 
 class Autor(models.Model):
