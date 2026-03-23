@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from core.views import UserRegistrationView, UserViewSet, CategoriaViewSet, EditoraViewSet, AutorViewSet, LivroViewSet
+from core.views import AutorViewSet, CategoriaViewSet, EditoraViewSet, LivroViewSet, UserRegistrationView, UserViewSet
 
 router = DefaultRouter()
 
