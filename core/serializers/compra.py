@@ -1,6 +1,13 @@
+from core.admin import ItensCompra
 from rest_framework.serializers import CharField, ModelSerializer
 
 from core.models import Compra
+
+class ItensCompraSerializer(ModelSerializer):
+    class Meta:
+        model = ItensCompra
+        fields = quantidade
+
 
 
 class CompraSerializer(ModelSerializer):
