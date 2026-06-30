@@ -7,5 +7,5 @@ class Editora(models.Model):
     email = models.EmailField(max_length=100, blank=True, null=True)
     cidade = models.CharField(max_length=100, blank=True, null=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.nome
