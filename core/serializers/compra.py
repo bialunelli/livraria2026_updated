@@ -1,6 +1,12 @@
-from rest_framework.serializers import CharField, ModelSerializer, SerializerMethodField
+from rest_framework.serializers import (
+    CharField,
+    CurrentUserDefault,
+    HiddenField,
+    ModelSerializer,
+    SerializerMethodField,
+)
 
-from core.models import Compra, ItensCompra
+from core.models import Compra, ItensCompra, ItensCompraListSerializer
 
 
 class ItensCompraSerializer(ModelSerializer):
@@ -19,10 +25,12 @@ class ItensCompraSerializer(ModelSerializer):
         fields = {'titulo', 'quantidade', 'preco', 'capa', 'editora'}
         depth = 1
 
+
 class ItensCompraCreateUpdateSerializer(ModelSerializer):
     class Meta:
         model = ItensCompra
         fields = ('livro', 'quantidade')
+
 
 class ItensListSerializer(ModelSerializer):
     livro = CharField(source='livro.titulo', read_only=True)
@@ -32,12 +40,15 @@ class ItensListSerializer(ModelSerializer):
         fields = ('quantidade', 'livro')
         depth = 1
 
+
 class CompraCreateUpdateSerializer(ModelSerializer):
-    itens = ItensCompraCreateUpdateSerializer(many=True)
+    usuario = HiddenField(default=CurrentUserDefault())
+    itens = ItensCompraCreateUpdateSerializer(many=True)  # ruff: ignore[trailing-whitespace]
 
     class Meta:
         model = Compra
         fields = ('usuario', 'itens')
+
 
 class CompraSerializer(ModelSerializer):
     status = CharField(source='get_status_display', read_only=True)
@@ -47,6 +58,7 @@ class CompraSerializer(ModelSerializer):
     class Meta:
         model = Compra
         fields = '_all_'
+
 
 class CompraListSerializer(ModelSerializer):
     usuario = CharField(source='usuario.email', read_only=True)
