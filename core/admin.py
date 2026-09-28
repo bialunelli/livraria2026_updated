@@ -1,4 +1,4 @@
-from django.contrib.admin import ModelAdmin, StackedInline, display, register
+from django.contrib.admin import ModelAdmin, StackedInline, display, register  # ruff: ignore[unused-import]
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
@@ -30,18 +30,21 @@ class ItensCompraInline(StackedInline):
 
 @register(Compra)
 class CompraAdmin(ModelAdmin):
-    list_display = ('usuario', 'status', 'total_formatado')
-    search_fields = ('usuario', 'status')
-    list_filter = ('usuario', 'status')
-    ordering = ('usuario', 'status')
-    list_per_page = 10
-    inlines = [ItensCompraInline]
-    readonly_fields = ('total_formatado',)
-
-    @display(description='Total')
+    @admin.display(description="Total")  # ruff: ignore[undefined-name]
     def total_formatado(self, obj):
         """Exibe R$ 123,45 em vez de 123.45."""
-        return f'R$ {obj.total:.2f}'
+        return f"R$ {obj.total:.2f}"
+
+    list_display = ('usuario', 'status', 'total_formatado', 'data')  # mostra na listagem
+    ordering = ('usuario', 'status', 'data')  # ordena por esses campos
+    search_fields = ('usuario__email', 'status')  # campos pesquisáveis
+    list_filter = ('status', 'data')  # filtros laterais
+    list_per_page = 10
+    inlines = [ItensCompraInline]
+    readonly_fields = ('data', 'total_formatado',)  # campos somente leitura
+
+
+...
 
 
 @register(Editora)
